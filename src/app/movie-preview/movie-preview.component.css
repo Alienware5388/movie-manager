@@ -1,0 +1,12 @@
+.movie-card{
+  max-width: 400px;
+  background-color: #148bb3;
+  margin:16px;
+  /*Margin --- pune x pixeli peste tot --- si sus, si jos, si stg, si dreapta */
+  padding: 16px;
+}
+.movie-title{
+  font-size:18px;
+  font-family: Calibri;
+  font-weight: bold;
+}
