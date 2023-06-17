@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {MovieService} from "../movie.service";
 
 @Component({
   selector: 'app-movie-preview',
@@ -9,9 +10,18 @@ export class MoviePreviewComponent {
   @Input() movie: any;
   @Output() onChange: EventEmitter<any>=new EventEmitter<any>();
 
+  constructor(private movieService:MovieService){
+
+  }
   public onDelete(): void {
     // alert("S-a apasat butonul de delete!");
-    this.onChange.emit();
+    this.movieService.deleteMovie(this.movie.id!).then((response: any) => {
+      console.log(response);
+      alert(response.message);
+      this.onChange.emit();
+
+    })
+
 
   }
 

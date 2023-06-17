@@ -1,33 +1,23 @@
-import { Component } from '@angular/core';
+import {AfterContentChecked, Component} from '@angular/core';
+import {MovieService} from "../movie.service";
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent {
+export class DashboardComponent implements AfterContentChecked{
 
   movieList: Array<any> = [];
-  constructor()  {
-    let movie1= {
-      title: "Game of Thrones",
-      description : "A song of fire and ice",
-      year: "2014",
-      director: "Popescu"
-    };
-    this.movieList.push(movie1);
-
-    let movie2= {
-      title: "Lord of the Rings",
-      description : "White mage",
-      year: "2011",
-      director: "ABC"
-    };
-    this.movieList.push(movie2);
-    console.log(this.movieList);
-  }
+  constructor(private movieService:MovieService)  {
+    this.movieList = this.movieService.getMovieList();
+      }
 
   refreshList():void{
-    alert("S-a produs o schimbare in movie preview!");
+    this.movieList = this.movieService.getMovieList()
+      }
+
+  ngAfterContentChecked(): void {
+    this.refreshList();
   }
 }

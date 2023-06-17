@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {MovieService} from "../movie.service";
 
 @Component({
   selector: 'app-create-edit-movie',
@@ -14,6 +15,8 @@ export class CreateEditMovieComponent {
     yearFormControl : new FormControl('',[Validators.required]),
     descriptionFormControl : new FormControl('',[Validators.required]),
   })
+  constructor(private movieService: MovieService) {
+  }
 
   public onSave():void
   {
@@ -45,5 +48,24 @@ export class CreateEditMovieComponent {
 
     console.log(this.movieFormGroup.value);
 
+    let movie = {
+      id:"",
+      title: this.movieFormGroup.value.titleFormControl,
+      description: this.movieFormGroup.value.descriptionFormControl,
+      year: this.movieFormGroup.value.yearFormControl,
+      director: this.movieFormGroup.value.directorFormControl
+    };
+
+    if(movie.id == "") {
+      this.movieService.createMovie(movie).then((response: any) => {
+        console.log(response);
+        alert(response.message);
+      })
+    } else {
+      this.movieService.updateMovie(movie).then((response: any) => {
+        console.log(response);
+        alert(response.message);
+      })
+    }
   }
 }

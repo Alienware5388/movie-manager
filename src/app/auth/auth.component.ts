@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
 import {FormControl, Validators} from "@angular/forms";
+import {AuthService} from "./auth.service";
+import {Route, Router} from "@angular/router";
 
 @Component({
   selector: 'app-auth',
@@ -16,23 +18,32 @@ export class AuthComponent {
   age: number = 100.5;
   isTrue: boolean = false;
 
+  constructor(private authService:AuthService, private router:Router) {
+  }
+
   public onLogin(): void {
-    let text = "";
-    switch (text) {
-      case'Login':
-        break;
-      case'Register':
-        break;
-    }
+    let email=this.emailFormControl.getRawValue()!;
+    let password=this.passwordFormControl.getRawValue()!;
+
+    this.authService.logIn(email,password).subscribe((response: any) => {
+      console.log(response);
+      alert(response.message);
+      this.router.navigate(["/", "dashboard"]);
+      // this.router.navigateByUrl("/dashboard");
+    })
   }
 
   public onRegister(): void {
     let email = this.emailFormControl.getRawValue()!;
-    let password = this.passwordFormControl.getRawValue();
-    let reTypePassord = this.reTypePasswordFormControl.getRawValue();
+    let password = this.passwordFormControl.getRawValue()!;
+    let reTypePassword = this.reTypePasswordFormControl.getRawValue()!;
 
-    if (password == reTypePassord) {
-      console.log("Parolele se potrivesc");
+    if (password == reTypePassword) {
+      this.authService.register(email,password,reTypePassword).subscribe((response: any) => {
+        console.log(response);
+        alert(response.message);
+        this.viewType = "login";
+      })
     } else {
       alert("Parolele nu se potrivesc");
     }
